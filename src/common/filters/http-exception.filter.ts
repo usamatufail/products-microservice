@@ -11,6 +11,10 @@ export class HttpExceptionFilter implements ExceptionFilter {
 
     const error = exception.getResponse() as object;
 
+    if (!request) {
+      return exception;
+    }
+
     response.status(status).json({
       ...error,
       timestamp: new Date().toISOString(),

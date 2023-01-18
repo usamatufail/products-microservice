@@ -21,8 +21,11 @@ export const filterProducts = (search: string, products: any): any => {
         tagsIncluded = true;
       }
     });
-    const createDate = moments(product?.createdAt).format('YYYY-MM-DD');
-    const searchDate = moments(search).format('YYYY-MM-DD');
+    const createDate = product?.createdAt;
+    let searchDate = 'n/a';
+    if (moments(search, true).isValid()) {
+      searchDate = moments(search).format('YYYY-MM-DD');
+    }
     return (
       categoryContains ||
       variantsInlcluded ||

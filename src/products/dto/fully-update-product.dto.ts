@@ -1,18 +1,18 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IsArray, IsNotEmpty, IsOptional, IsString, Validate, ValidateNested } from 'class-validator';
+import { IsArray, IsNotEmpty, IsOptional, IsString, Validate, ValidateNested, ArrayNotEmpty } from 'class-validator';
 import { ProductVariantDto } from './product-variant.dto';
-import { ObjectIdValidator } from '../../common';
+import { IsNotBlank, ObjectIdValidator } from '../../common';
 
 export class FullyUpdateProductDto {
   @ApiProperty()
   @IsString()
-  @IsNotEmpty()
+  @IsNotBlank()
   name: string;
 
   @ApiProperty()
   @IsArray()
-  @IsNotEmpty()
+  @ArrayNotEmpty()
   @IsString({ each: true })
   tags: string[];
 
@@ -23,13 +23,13 @@ export class FullyUpdateProductDto {
   mainVariant: ProductVariantDto;
 
   @ApiProperty()
-  @IsNotEmpty()
+  @IsNotBlank()
   @Validate(ObjectIdValidator)
   productType: string;
 
   @ApiProperty()
   @IsArray()
-  @IsNotEmpty()
+  @ArrayNotEmpty()
   @Validate(ObjectIdValidator, { each: true })
   categories: string[];
 }

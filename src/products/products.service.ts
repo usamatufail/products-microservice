@@ -31,7 +31,7 @@ export class ProductsService {
   }
 
   // Get All Products
-  async getAll(search: string, page: number, limit: number): Promise<{ products: Product[]; totalPages: number; currentPage: number }> {
+  async getAll(search?: string, page?: number, limit?: number): Promise<{ products: Product[]; totalPages: number; currentPage: number }> {
     let products: Product[];
     if (search) {
       const productDocs = await this.model

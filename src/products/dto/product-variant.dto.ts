@@ -1,15 +1,11 @@
-// @Prop({ required: true })
-//
-
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumber, IsOptional, IsString, Validate } from 'class-validator';
-import { ObjectId } from 'mongoose';
-import { ObjectIdValidator } from '../../common';
+import { IsNumber, IsOptional, IsString, IsNotEmpty } from 'class-validator';
+import { IsNotBlank } from '../../common';
 
 export class ProductVariantDto {
   @ApiProperty()
   @IsString()
-  @IsNotEmpty()
+  @IsNotBlank()
   name: string;
 
   @ApiProperty()

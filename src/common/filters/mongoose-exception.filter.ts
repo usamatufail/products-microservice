@@ -1,17 +1,9 @@
-import {
-  ArgumentsHost,
-  Catch,
-  ExceptionFilter,
-  HttpStatus,
-} from '@nestjs/common';
+import { ArgumentsHost, Catch, ExceptionFilter, HttpStatus } from '@nestjs/common';
+import { GqlArgumentsHost } from '@nestjs/graphql';
 import { Request, Response } from 'express';
 import { Error } from 'mongoose';
 
-const responseCreator = (
-  response: Response,
-  request: Request,
-  error: string | any,
-) => {
+const responseCreator = (response: Response, request: Request, error: string | any) => {
   return response.status(HttpStatus.BAD_REQUEST).json({
     error,
     timestamp: new Date().toISOString(),
@@ -26,8 +18,10 @@ export class MongooseException implements ExceptionFilter {
     const response = ctx.getResponse<Response>();
     const request = ctx.getRequest<Request>();
 
-    console.log(exception.message);
-
-    return responseCreator(response, request, exception?.message);
+    if (!request) {
+      return exception;
+    } else {
+      return responseCreator(response, request, exception?.message);
+    }
   }
 }

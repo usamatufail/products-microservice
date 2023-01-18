@@ -1,17 +1,8 @@
-import {
-  ArgumentsHost,
-  Catch,
-  ExceptionFilter,
-  HttpStatus,
-} from '@nestjs/common';
+import { ArgumentsHost, Catch, ExceptionFilter, HttpStatus } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { MongoServerError } from 'mongodb';
 
-const responseCreator = (
-  response: Response,
-  request: Request,
-  error: string,
-) => {
+const responseCreator = (response: Response, request: Request, error: string) => {
   return response.status(HttpStatus.BAD_REQUEST).json({
     error,
     timestamp: new Date().toISOString(),
@@ -25,6 +16,10 @@ export class MongoExceptionFilter implements ExceptionFilter {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
     const request = ctx.getRequest<Request>();
+
+    if (!request) {
+      return exception;
+    }
 
     let error: string;
     switch (exception.code) {

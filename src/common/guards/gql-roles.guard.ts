@@ -1,16 +1,18 @@
 import { Injectable, CanActivate, ExecutionContext, ForbiddenException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Reflector } from '@nestjs/core';
+import { GqlExecutionContext, GraphQLExecutionContext } from '@nestjs/graphql';
 import { shouldBypassAuth } from '../decorators';
 import { Role } from '../enums';
 
 @Injectable()
-export class RolesGuard implements CanActivate {
+export class GQLRolesGuard implements CanActivate {
   private audience: string;
   constructor(private reflector: Reflector, private config: ConfigService) {
     this.audience = this.config.get<string>('AUTH_AUDIENCE');
   }
-  canActivate(context: ExecutionContext): boolean {
+  canActivate(ctx: GraphQLExecutionContext): boolean {
+    const context = GqlExecutionContext.create(ctx);
     if (shouldBypassAuth(context, this.reflector)) {
       return true;
     }
@@ -18,7 +20,7 @@ export class RolesGuard implements CanActivate {
     if (!requireRoles) {
       return true;
     }
-    const req = context.switchToHttp().getRequest();
+    const req = context.getContext().req;
     const reqRoles = requireRoles?.some((role) => req?.user[`${this.audience}/roles`]?.includes(role));
 
     // Check if role exists then proceed otherwise throw exception

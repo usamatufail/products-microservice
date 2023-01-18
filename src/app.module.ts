@@ -1,4 +1,4 @@
-import { MiddlewareConsumer, Module, NestModule, RequestMethod, Scope } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { EventEmitterModule } from '@nestjs/event-emitter';
@@ -7,6 +7,8 @@ import { CategoriesModule } from './categories/categories.module';
 import { ProductTypeModule } from './product-type/product-type.module';
 import { ImageUploadModule } from './image-upload/image-upload.module';
 import { LogsModule } from './logs/logs.module';
+import { GraphQLModule } from '@nestjs/graphql';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 
 @Module({
   imports: [
@@ -15,6 +17,10 @@ import { LogsModule } from './logs/logs.module';
     }),
     ConfigModule.forRoot({
       isGlobal: true,
+    }),
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      autoSchemaFile: true,
     }),
     MongooseModule.forRootAsync({
       imports: [

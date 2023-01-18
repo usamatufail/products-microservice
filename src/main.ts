@@ -3,9 +3,6 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { HttpExceptionFilter, MongoExceptionFilter, MongooseException } from './common/filters';
-import { CategoriesModule } from './categories/categories.module';
-import { ProductTypeModule } from './product-type/product-type.module';
-import { ProductsModule } from './products/products.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -33,6 +30,6 @@ async function bootstrap() {
     },
   });
 
-  await app.listen(process.env.PORT || 8080);
+  await app.listen(3000);
 }
 bootstrap();

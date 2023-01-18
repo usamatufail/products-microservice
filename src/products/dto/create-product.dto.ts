@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { ArrayNotEmpty, IsArray, IsNotEmpty, IsOptional, IsString, Validate, ValidateNested } from 'class-validator';
 import { ProductVariantDto } from './product-variant.dto';
-import { ObjectIdValidator } from '../../common';
+import { IsNotBlank, ObjectIdValidator } from '../../common';
 
 export class CreateProductDto {
   @ApiProperty({ type: [ProductVariantDto] })
@@ -14,7 +14,7 @@ export class CreateProductDto {
 
   @ApiProperty()
   @IsString()
-  @IsNotEmpty()
+  @IsNotBlank()
   name: string;
 
   @ApiProperty()
@@ -30,7 +30,7 @@ export class CreateProductDto {
   mainVariant: ProductVariantDto;
 
   @ApiProperty()
-  @IsNotEmpty()
+  @IsNotBlank()
   @Validate(ObjectIdValidator)
   productType: string;
 

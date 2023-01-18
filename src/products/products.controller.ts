@@ -46,43 +46,6 @@ export class ProductsController {
     return this.service.create(dto);
   }
 
-  @Get()
-  // @BypassAuth()
-  @ApiOperation({ summary: 'Gets All Products' })
-  @ApiQuery({
-    name: 'page',
-    required: false,
-    type: Number,
-    example: 1,
-  })
-  @ApiQuery({
-    name: 'search',
-    required: false,
-    type: String,
-    description:
-      'Search products by categories, tags, name, variants, and createdAt etc. <br /> In order to search for date use date in one of these formats: `MM/DD/YYYY`, or `MM-DD-YYYY`',
-  })
-  @ApiQuery({
-    name: 'limit',
-    required: false,
-    type: Number,
-    example: 10,
-  })
-  getAll(
-    @Query('search') search: string = '',
-    @Query('page') page: number = 1,
-    @Query('limit') limit: number = 10,
-  ): Promise<{ products: Product[]; totalPages: number; currentPage: number }> {
-    return this.service.getAll(search, page, limit);
-  }
-
-  @Get(':id')
-  // @BypassAuth()
-  @ApiOperation({ summary: 'Gets product by Id' })
-  getById(@Param('id', ParseObjectIdPipe) id: string): Promise<Product> {
-    return this.service.getById(id);
-  }
-
   @Put(':id')
   @ApiOperation({ summary: 'Fully updates a product per id' })
   fullyUpdateById(@Param('id', ParseObjectIdPipe) id: string, @Body() dto: FullyUpdateProductDto): Promise<Product> {
@@ -166,4 +129,41 @@ export class ProductsController {
   deleteImageById(@Param('id', ParseObjectIdPipe) id: string, @Param('imageId', ParseObjectIdPipe) imageId: string) {
     return this.service.deleteImageById(id, imageId);
   }
+
+  // @Get()
+  // // @BypassAuth()
+  // @ApiOperation({ summary: 'Gets All Products' })
+  // @ApiQuery({
+  //   name: 'page',
+  //   required: false,
+  //   type: Number,
+  //   example: 1,
+  // })
+  // @ApiQuery({
+  //   name: 'search',
+  //   required: false,
+  //   type: String,
+  //   description:
+  //     'Search products by categories, tags, name, variants, and createdAt etc. <br /> In order to search for date use date in one of these formats: `MM/DD/YYYY`, or `MM-DD-YYYY`',
+  // })
+  // @ApiQuery({
+  //   name: 'limit',
+  //   required: false,
+  //   type: Number,
+  //   example: 10,
+  // })
+  // getAll(
+  //   @Query('search') search: string = '',
+  //   @Query('page') page: number = 1,
+  //   @Query('limit') limit: number = 10,
+  // ): Promise<{ products: Product[]; totalPages: number; currentPage: number }> {
+  //   return this.service.getAll(search, page, limit);
+  // }
+
+  // @Get(':id')
+  // // @BypassAuth()
+  // @ApiOperation({ summary: 'Gets product by Id' })
+  // getById(@Param('id', ParseObjectIdPipe) id: string): Promise<Product> {
+  //   return this.service.getById(id);
+  // }
 }
